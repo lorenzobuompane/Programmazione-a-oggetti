@@ -1,0 +1,86 @@
+package clinic;
+
+import java.util.ArrayList;
+
+public class Doctor extends Patient{
+	
+	private String first;
+	private String last;
+	private String ssn;
+	private int docID;
+	private String specialization;
+	private ArrayList<Patient> pat;
+	
+	public Doctor (String first, String last, String ssn, int docID, String specialization) {
+		super(first, last, ssn);
+		this.docID=docID;
+		this.specialization=specialization;
+		this.setPat(new ArrayList<>());
+	}
+	
+	public String getFirst() {
+		return first;
+	}
+
+	public void setFirst(String first) {
+		this.first = first;
+	}
+
+	public String getLast() {
+		return last;
+	}
+
+	public void setLast(String last) {
+		this.last = last;
+	}
+
+	public String getSsn() {
+		return ssn;
+	}
+
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
+	}
+
+	public int getId() {
+		return docID;
+	}
+
+	public void setId(int docID) {
+		this.docID= docID;
+	}
+
+	public String getSpecialization() {
+		return specialization;
+	}
+
+	public void setSpecialization(String specialization) {
+		this.specialization = specialization;
+	}
+
+	public ArrayList<Patient> getPat() {
+		return pat;
+	}
+
+	public void setPat(ArrayList<Patient> pat) {
+		this.pat = pat;
+	}
+	
+	public void addPatient(Patient p) {
+		this.pat.add(p);
+	}
+	
+	public String getLastFirst() {
+		return this.last + " " + this.first;
+	}
+	
+	public int getnPatient() {
+		return this.pat.size();
+	}
+	
+	public String stringNumPatient() {
+		String num = String.format("%3d", getnPatient());
+		return num + " : " + this.docID + " " + this.last + " " + this.first;
+	}
+
+}

@@ -1,0 +1,42 @@
+package university;
+
+public class Student {
+	
+	//Attributi
+	
+	private String first;		//first name studente
+	private String last;		//last name studente
+	private int matricola = 10000;	//numero matricola (parte da 10000)
+	
+	public String getFirst() {
+		return first;
+	}
+	
+	public void setFirst(String sfirst) {
+		first = sfirst;
+	}
+	
+	public String getLast() {
+		return last;
+	}
+	
+	public void setLast(String slast) {
+		last = slast;
+	}
+	
+	//CTOR
+	public Student (String first, String last, int matr) {
+		this.first = first;
+		this.last = last;
+		this.matricola += matr;
+		matr++;
+	}
+
+	public int getMatr() {
+		return matricola;
+	}
+
+	
+	
+	
+}

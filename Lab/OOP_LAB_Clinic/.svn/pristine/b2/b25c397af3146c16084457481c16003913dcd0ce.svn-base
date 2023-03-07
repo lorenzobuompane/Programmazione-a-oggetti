@@ -1,0 +1,59 @@
+package clinic;
+
+public class Doctor {
+	
+	private String first;
+	private String last;
+	private String ssn;
+	private int docID;
+	private String specialization;
+	
+	public Doctor (String first, String last, String ssn, int docID, String specialization) {
+		this.first=first;
+		this.last=last;
+		this.ssn=ssn;
+		this.docID=docID;
+		this.specialization=specialization;
+	}
+	
+	public String getFirst() {
+		return first;
+	}
+
+	public void setFirst(String first) {
+		this.first = first;
+	}
+
+	public String getLast() {
+		return last;
+	}
+
+	public void setLast(String last) {
+		this.last = last;
+	}
+
+	public String getSsn() {
+		return ssn;
+	}
+
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
+	}
+
+	public int getId() {
+		return docID;
+	}
+
+	public void setId(int docID) {
+		this.docID= docID;
+	}
+
+	public String getSpecialization() {
+		return specialization;
+	}
+
+	public void setSpecialization(String specialization) {
+		this.specialization = specialization;
+	}
+
+}

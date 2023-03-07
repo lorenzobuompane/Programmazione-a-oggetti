@@ -1,0 +1,155 @@
+package university;
+
+import university.Student;
+
+/**
+ * This class represents a university education system.
+ * 
+ * It manages students and courses.
+ *
+ */
+
+public class University {
+	
+	//Attributi
+	private String name;		//name ateneo
+	
+	private String Rfirst;		//first name rettore
+	private String Rlast;		//last name rettore	
+
+	private Student[] student = new Student [MAX_STUD];
+	
+	
+	//Costanti
+	static final int MAX_STUD = 1000;
+	
+	/**
+	 * Constructor
+	 * @param name name of the university
+	 */
+	public University(String name){
+		this.name = name;
+	}
+	
+	/**
+	 * Getter for the name of the university
+	 * @return name of university
+	 */
+	public String getName(){
+		return this.name;
+	}
+	
+	/**
+	 * Defines the rector for the university
+	 * 
+	 * @param first
+	 * @param last
+	 */
+	public void setRector(String first, String last){
+		this.Rfirst = first;
+		this.Rlast = last;
+	}
+	
+	/**
+	 * Retrieves the rector of the university
+	 * 
+	 * @return
+	 */
+	public String getRector(){
+		return (Rfirst + " " + Rlast);
+	}
+	
+	/**
+	 * Enroll a student in the university
+	 * 
+	 * @param first first name of the student
+	 * @param last last name of the student
+	 * @return
+	 */
+	public int enroll(String first, String last) {
+		
+		int i;
+		for (i=0; i<MAX_STUD; i++) {
+			if (student[i] == null) {
+				student[i] = new Student(first, last, i);
+				break;
+			}
+		}
+		
+		return student[i].getMatr();
+		
+	}
+	
+	/**
+	 * Retrieves the information for a given student
+	 * 
+	 * @param id the id of the student
+	 * @return information about the student
+	 */
+	public String student(int id){
+		
+		int i;
+		String retStudent = "Nessuno studente trovato";
+		for (i=0; i<MAX_STUD; i++) {
+			if (student[i].getMatr() == id) {
+				retStudent = (Integer.toString(student[i].getMatr()) + " " + student[i].getFirst() + " " + student[i].getLast());
+				break;
+			}
+		}
+		return retStudent;
+	}
+	
+	/**
+	 * Activates a new course with the given teacher
+	 * 
+	 * @param title title of the course
+	 * @param teacher name of the teacher
+	 * @return the unique code assigned to the course
+	 */
+	public int activate(String title, String teacher){
+		//TODO: to be implemented
+		return -1;
+	}
+	
+	/**
+	 * Retrieve the information for a given course
+	 * 
+	 * @param code unique code of the course
+	 * @return information about the course
+	 */
+	public String course(int code){
+		//TODO: to be implemented
+		return null;
+	}
+	
+	/**
+	 * Register a student to attend a course
+	 * @param studentID id of the student
+	 * @param courseCode id of the course
+	 */
+	public void register(int studentID, int courseCode){
+		//TODO: to be implemented
+	}
+	
+	/**
+	 * Retrieve a list of attendees
+	 * 
+	 * @param courseCode unique id of the course
+	 * @return list of attendees separated by "\n"
+	 */
+	public String listAttendees(int courseCode){
+		//TODO: to be implemented
+		return null;
+	}
+
+	/**
+	 * Retrieves the study plan for a student
+	 * 
+	 * @param studentID id of the student
+	 * @return list of courses the student is registered for
+	 */
+	public String studyPlan(int studentID){
+		//TODO: to be implemented
+		return null;
+	}
+}

@@ -1,0 +1,116 @@
+package university;
+
+public class Student {
+	
+	//Attributi
+	
+	private String first;		//first name studente
+	private String last;		//last name studente
+	private int matricola = 10000;	//numero matricola (parte da 10000)
+	private int nCourse = 0;
+	private Course[] studCourse = new Course[MAX_INSxSTUD];
+	
+	//Costanti
+	static final int MAX_INSxSTUD = 25; 		//numero massimo di insegnamenti per ciascun studente
+	static final int MAX_INS = 50;
+	
+	public String getFirst() {
+		return first;
+	}
+	
+	public void setFirst(String sfirst) {
+		first = sfirst;
+	}
+	
+	public String getLast() {
+		return last;
+	}
+	
+	public void setLast(String slast) {
+		last = slast;
+	}
+	
+	//CTOR
+	public Student (String first, String last, int matr) {
+		this.first = first;
+		this.last = last;
+		this.matricola += matr;
+	}
+
+	public int getMatr() {
+		return matricola;
+	}
+
+	public int getnCourse() {
+		return nCourse;
+	}
+
+	public void setnCourse(int nCourse) {
+		this.nCourse = nCourse;
+	}
+	
+	/**
+	 * Control course 
+	 * 
+	 * TRUE: can register
+	 * FALSE: can't register
+	 * 
+	 * @param student ID
+	 * @param course Code
+	 * @return boolean 
+	 */
+	public Boolean ctrlIns (int studentID, int courseCode) {
+		int i;
+		for (i=0; i<MAX_INSxSTUD; i++) {
+			if (nCourse<=MAX_INSxSTUD) {								//controllo di aver ancora posti per inserire un corso
+				if (nCourse==0) {
+					return true;
+				}
+				if (studCourse[i].ctrlStud(studentID)==true) {			//chiamo funzione per controllo disponibilità corso
+					return true;										//posso registrare
+				}	
+			}
+		}
+		if (nCourse==MAX_INSxSTUD) 
+			System.out.println("Numero di corsi massimo raggiunto!");
+		else
+			System.out.println("Corso già registrato!");
+		return false;													
+	}
+	
+	/**
+	 * Register course
+	 * 
+	 * @param course
+	 */
+	public void regIns (Course course) {
+		int i;
+		for (i=0; i<MAX_INSxSTUD; i++) {
+			if (studCourse[i]==null) {
+				studCourse[i]=course;
+				nCourse++;
+				break;
+			}
+				
+		}
+	}
+	
+	/**
+	 * Creation string with course
+	 * 
+	 * @return result string
+	 */
+	public String risString() {
+		int i;
+		String risultato = "";
+		for (i=0; i<nCourse; i++) {
+			risultato = risultato + studCourse[i].getCode() + ", " + studCourse[i].getTitle() + ", " + studCourse[i].getTeacher() + "\n";
+		}
+		return risultato;
+	}
+	
+
+	
+	
+	
+}

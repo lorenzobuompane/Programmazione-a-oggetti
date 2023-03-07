@@ -1,0 +1,57 @@
+package mountainhuts;
+
+import java.util.Optional;
+
+public class MountainHut {
+	
+	private String name;
+	private Optional<Integer> altitude;
+	private String category;
+	private Integer bedsnumber;
+	private Municipality municipality;
+	
+	public MountainHut(String name, Integer altitude, String category, Integer bedsnumber, Municipality municipality) {
+		this.name = name;
+		this.altitude = Optional.ofNullable(altitude);
+		this.category = category;
+		this.bedsnumber = bedsnumber;
+		this.municipality = municipality;
+	}
+	
+	public MountainHut(String name, String category, Integer bedsnumber, Municipality municipality) {
+		this.name = name;
+		this.altitude=Optional.empty();
+		this.category = category;
+		this.bedsnumber = bedsnumber;
+		this.municipality = municipality;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public Optional<Integer> getAltitude() {
+		return this.altitude;
+	}
+
+	public String getCategory() {
+		return this.category;
+	}
+
+	public Integer getBedsNumber() {
+		return this.bedsnumber;
+	}
+
+	public Municipality getMunicipality() {
+		return this.municipality;
+	}
+	
+	public String getProvince() {
+		return this.getMunicipality().getProvince();
+	}
+	
+	public String getMunicipalityName() {
+		return this.getMunicipality().getName();
+	}
+
+}

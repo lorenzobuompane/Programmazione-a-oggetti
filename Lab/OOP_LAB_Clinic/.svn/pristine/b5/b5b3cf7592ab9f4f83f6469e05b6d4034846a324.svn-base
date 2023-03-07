@@ -1,0 +1,255 @@
+package clinic;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import static java.util.Comparator.*;
+
+import static java.util.stream.Collectors.*;
+
+/**
+ * Represents a clinic with patients and doctors.
+ * 
+ */
+public class Clinic {
+	
+	private Map<String, Patient> p = new HashMap<>();
+	private Map<Integer, Doctor> d = new HashMap<>();
+	
+	/**
+	 * Add a new clinic patient.
+	 * 
+	 * @param first first name of the patient
+	 * @param last last name of the patient
+	 * @param ssn SSN number of the patient
+	 */
+	public void addPatient(String first, String last, String ssn) {
+		Patient p = new Patient(first, last, ssn);
+		this.p.put(ssn, p);
+	}
+
+
+	/**
+	 * Retrieves a patient information
+	 * 
+	 * @param ssn SSN of the patient
+	 * @return the object representing the patient
+	 * @throws NoSuchPatient in case of no patient with matching SSN
+	 */
+	public String getPatient(String ssn) throws NoSuchPatient {
+		Patient p = this.p.get(ssn);
+		if (p == null)
+			throw new NoSuchPatient("Patient " + ssn + " not found\n");
+		return p.getLast() + " " + p.getFirst() + " (" + p.getSsn() + ")";
+	}
+
+	/**
+	 * Add a new doctor working at the clinic
+	 * 
+	 * @param first first name of the doctor
+	 * @param last last name of the doctor
+	 * @param ssn SSN number of the doctor
+	 * @param docID unique ID of the doctor
+	 * @param specialization doctor's specialization
+	 */
+	public void addDoctor(String first, String last, String ssn, int docID, String specialization) {
+		Doctor d = new Doctor(first, last, ssn, docID, specialization);
+		this.d.put(Integer.valueOf(docID), d);
+	}
+
+	/**
+	 * Retrieves information about a doctor
+	 * 
+	 * @param docID ID of the doctor
+	 * @return object with information about the doctor
+	 * @throws NoSuchDoctor in case no doctor exists with a matching ID
+	 */
+	public String getDoctor(int docID) throws NoSuchDoctor {
+		Doctor d = this.d.get(docID);
+		if (d == null)
+			throw new NoSuchDoctor("Doctor " + docID + " not found\n");
+		return d.getLast() + " " + d.getFirst() + " (" + d.getSsn() + ") [" + d.getId() + "]: " + d.getSpecialization();
+	}
+	
+	/**
+	 * Assign a given doctor to a patient
+	 * 
+	 * @param ssn SSN of the patient
+	 * @param docID ID of the doctor
+	 * @throws NoSuchPatient in case of not patient with matching SSN
+	 * @throws NoSuchDoctor in case no doctor exists with a matching ID
+	 */
+	public void assignPatientToDoctor(String ssn, int docID) throws NoSuchPatient, NoSuchDoctor {
+		Patient p = this.p.get(ssn);
+		if (p == null)
+			throw new NoSuchPatient("Patient " + ssn + " not found\n");
+		Doctor d = this.d.get(docID);
+		if (d == null)
+			throw new NoSuchDoctor("Doctor " + docID + " not found\n");
+		p.setDoc(d);
+		d.addPatient(p);
+	}
+	
+	/**
+	 * Retrieves the id of the doctor assigned to a given patient.
+	 * 
+	 * @param ssn SSN of the patient
+	 * @return id of the doctor
+	 * @throws NoSuchPatient in case of not patient with matching SSN
+	 * @throws NoSuchDoctor in case no doctor has been assigned to the patient
+	 */
+	public int getAssignedDoctor(String ssn) throws NoSuchPatient, NoSuchDoctor {
+		Patient p = this.p.get(ssn);
+		if (p == null)
+			throw new NoSuchPatient("Patient " + ssn + " not found\n");
+		Doctor d = p.getDoc();
+		if (d == null)
+			throw new NoSuchDoctor("No Doctor assigned to Patient " + ssn + "\n" );
+		
+		return d.getId();
+	}
+	
+	/**
+	 * Retrieves the patients assigned to a doctor
+	 * 
+	 * @param id ID of the doctor
+	 * @return collection of patient SSNs
+	 * @throws NoSuchDoctor in case the {@code id} does not match any doctor 
+	 */
+	public Collection<String> getAssignedPatients(int id) throws NoSuchDoctor {
+		Doctor d = this.d.get(id);
+		if (d == null)
+			throw new NoSuchDoctor("Doctor " + id + " not found\n");
+		Collection<String> ssn = new ArrayList<String>();
+		for (Patient p : d.getPat()) {
+			ssn.add(p.getSsn());
+		}
+		return ssn;
+	}
+
+	/**
+	 * Loads data about doctors and patients from the given stream.
+	 * <p>
+	 * The text file is organized by rows, each row contains info about
+	 * either a patient or a doctor.</p>
+	 * <p>
+	 * Rows containing a patient's info begin with letter {@code "P"} followed by first name,
+	 * last name, and SSN. Rows containing doctor's info start with letter {@code "M"},
+	 * followed by badge ID, first name, last name, SSN, and specialization.<br>
+	 * The elements on a line are separated by the {@code ';'} character possibly
+	 * surrounded by spaces that should be ignored.</p>
+	 * <p>
+	 * In case of error in the data present on a given row, the method should be able
+	 * to ignore the row and skip to the next one.<br>
+
+	 * 
+	 * @param readed linked to the file to be read
+	 * @throws IOException in case of IO error
+	 */
+	public void loadData(Reader reader) throws IOException {
+		List<String> lines = null;
+		try (BufferedReader in = new BufferedReader(reader)) {
+			lines = in.lines().collect(toList());
+		}
+		catch(IOException e) {
+			System.err.println(e.getMessage());
+		}
+		
+		for (String s : lines) {
+			String[] split = s.split(";");
+			if (split[0].equals("P")) {
+				addPatient(split[1], split[2], split[3]);
+			}
+			else if (split[0].equals("M")) {
+				addDoctor(split[2], split[3], split[4], Integer.parseInt(split[1]), split[5]);
+			}
+		}
+	}
+
+	/**
+	 * Retrieves the collection of doctors that have no patient at all.
+	 * The doctors are returned sorted in alphabetical order
+	 * 
+	 * @return the collection of doctors' ids
+	 */
+	public Collection<Integer> idleDoctors(){
+		return d.values().stream()
+				.sorted((a, b)->(a.getLastFirst().compareTo(b.getLastFirst())))
+				.filter(x->x.getPat().size()==0)
+				.collect(mapping(x->x.getId(), toList()));
+	}
+	
+	/**
+	 * Calculate media value of Patient Array
+	 * 
+	 * @return media
+	 */
+	public double media () {
+		int somma=0;
+		int nDoctor=0;
+		for(Doctor d : this.d.values()) {
+			somma += d.getPat().size();
+			nDoctor++;			
+		}
+		return (double) somma/nDoctor;
+	}
+	
+	/**
+	 * Retrieves the collection of doctors having a number of patients larger than the average.
+	 * 
+	 * @return  the collection of doctors' ids
+	 */
+	public Collection<Integer> busyDoctors(){
+		return d.values().stream()
+				.sorted((a, b)->(a.getLastFirst().compareTo(b.getLastFirst())))
+				.filter(x->x.getPat().size()>media())
+				.collect(mapping(x->x.getId(), toList()));
+	}
+
+	/**
+	 * Retrieves the information about doctors and relative number of assigned patients.
+	 * <p>
+	 * The method returns list of strings formatted as "{@code ### : ID SURNAME NAME}" where {@code ###}
+	 * represent the number of patients (printed on three characters).
+	 * <p>
+	 * The list is sorted by decreasing number of patients.
+	 * 
+	 * @return the collection of strings with information about doctors and patients count
+	 */
+	public Collection<String> doctorsByNumPatients(){
+		return d.values().stream()
+				.sorted(comparing(Doctor::getnPatient).reversed())
+				.collect(mapping(x->x.stringNumPatient(), toList()));
+	}
+	
+	/**
+	 * Retrieves the number of patients per (their doctor's)  speciality
+	 * <p>
+	 * The information is a collections of strings structured as {@code ### - SPECIALITY}
+	 * where {@code SPECIALITY} is the name of the speciality and 
+	 * {@code ###} is the number of patients cured by doctors with such speciality (printed on three characters).
+	 * <p>
+	 * The elements are sorted first by decreasing count and then by alphabetic speciality.
+	 * 
+	 * @return the collection of strings with speciality and patient count information.
+	 */
+	public Collection<String> countPatientsPerSpecialization(){
+		Map<String, Long> map = d.values().stream()
+				.collect(groupingBy(
+						x->x.getSpecialization(),
+						counting()
+						));
+		ArrayList<String> ret = new ArrayList<>();
+		for (Map.Entry<String, Long> entry : map.entrySet()) {
+			ret.add(String.format("%3d", entry.getValue() + " - " + entry.getKey()));
+		}
+		Collections.sort(ret);
+		return ret;
+	}
+}

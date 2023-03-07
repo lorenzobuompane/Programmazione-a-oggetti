@@ -1,0 +1,30 @@
+package hydraulic;
+
+/**
+ * Represents the sink, i.e. the terminal element of a system
+ *
+ */
+public class Sink extends Element {
+
+	
+	/**
+	 * Constructor
+	 * @param name
+	 */
+	public Sink(String name) {
+		super(name);
+		//TODO: complete
+	}
+	
+	@Override
+	public void connect(Element elem){ 
+		
+	}
+	
+	@Override
+	public Element getOutput(){
+		System.err.println("Elemento selezionato di tipo Sink: non presenta un output");
+		return null;
+	}
+	
+}

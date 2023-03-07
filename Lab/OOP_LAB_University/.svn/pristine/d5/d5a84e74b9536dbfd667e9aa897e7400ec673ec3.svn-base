@@ -1,0 +1,97 @@
+package university;
+
+public class Course {
+	
+	private String title;
+	private String teacher;
+	private int code = 10;
+	private Student[] attendees = new Student [MAX_STUDxINS];			//Iscritti al corso
+	private int nAttendees = 0;
+	
+	static final int MAX_STUDxINS = 100;		//numero massimo di studenti per ciascun insegnamento
+	
+	//CTOR
+	public Course (String title, String teacher, int code) {
+		this.title = title;
+		this.teacher = teacher;
+		this.code += code;
+		}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public int getnAttendees() {
+		return nAttendees;
+	}
+	
+	/**
+	 * Control student
+	 * 
+	 * TRUE: can register
+	 * FALSE: can't register
+	 * 
+	 * @param student ID
+	 * @return boolean
+	 */
+	public Boolean ctrlStud (int studentID) {
+		int i;
+		for (i=0; i<MAX_STUDxINS; i++) {
+			if (attendees[i].getMatr() != studentID) {
+				if (nAttendees!=MAX_STUDxINS) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Register student
+	 * 
+	 * @param student
+	 */
+	public void regStud (Student student) {
+		int i;
+		for (i=0; i<MAX_STUDxINS; i++) {
+			if (attendees[i]==null) {
+				attendees[i]=student;
+				nAttendees++;
+				break;
+			}
+
+		}
+	}
+	
+	/**
+	 * Creation string with student 
+	 * @return
+	 */
+	public String risStringa() {
+		int i;
+		String risultato = "";
+		for (i=0; i<nAttendees; i++) {
+			risultato = risultato + attendees[i].getMatr() + " " + attendees[i].getFirst() + " " + attendees[i].getLast() + "\n";
+		}
+		return risultato;
+	}
+
+	
+	
+}

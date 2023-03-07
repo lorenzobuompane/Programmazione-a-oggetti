@@ -1,0 +1,56 @@
+package university;
+
+public class Course {
+	
+	private String title;
+	private String teacher;
+	private int code = 10;
+	private int[] attendees = new int [MAX_STUDxINS];
+	private int nAttendees = 0;
+	
+	static final int MAX_STUDxINS = 100;		//numero massimo di studenti per ciascun insegnamento
+	
+	//CTOR
+	public Course (String title, String teacher, int code) {
+		this.title = title;
+		this.teacher = teacher;
+		this.code += code;
+		}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public int getnAttendees() {
+		return nAttendees;
+	}
+	
+	public void signUp (int studentID) {
+		
+		if (nAttendees < MAX_STUDxINS) {
+			nAttendees++;
+			attendees[nAttendees]=studentID;
+		}
+	}
+
+	
+
+	
+	
+}

@@ -1,0 +1,74 @@
+package university;
+
+public class Student {
+	
+	//Attributi
+	
+	private String first;		//first name studente
+	private String last;		//last name studente
+	private int matricola = 10000;	//numero matricola (parte da 10000)
+	private int nCourse = 0;
+	private Course[] StudCourse = new Course[MAX_INSxSTUD];
+	
+	//Costanti
+	static final int MAX_INSxSTUD = 25; 		//numero massimo di insegnamenti per ciascun studente
+	static final int MAX_INS = 50;
+	
+	public String getFirst() {
+		return first;
+	}
+	
+	public void setFirst(String sfirst) {
+		first = sfirst;
+	}
+	
+	public String getLast() {
+		return last;
+	}
+	
+	public void setLast(String slast) {
+		last = slast;
+	}
+	
+	//CTOR
+	public Student (String first, String last, int matr) {
+		this.first = first;
+		this.last = last;
+		this.matricola += matr;
+	}
+
+	public int getMatr() {
+		return matricola;
+	}
+
+	public int getnCourse() {
+		return nCourse;
+	}
+
+	public void setnCourse(int nCourse) {
+		this.nCourse = nCourse;
+	}
+	
+	public Boolean ctrlIns (int studentID, int courseCode) {
+		int i;
+		for (i=0; i<MAX_INSxSTUD; i++) {
+			if (StudCourse[i].getCode()!=courseCode) {
+				if (nCourse!=MAX_INSxSTUD) {
+					if (StudCourse[i].ctrlStud(studentID)==true) {
+						nCourse++;
+						return true;
+						}
+						
+					}
+				}
+			}
+		return false;
+	}
+	
+	public void regIns (int studentID, int courseCode);
+	
+
+	
+	
+	
+}
